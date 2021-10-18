@@ -30,34 +30,26 @@ public class Main {
         System.out.print("divider> ");
         int divider = scanner.nextInt();
 
-        double numberOfThreads = (double) numberList.size() / chunks;
-        numberOfThreads = Math.ceil(numberOfThreads);
-        ThreadPoolExecutor executor = (ThreadPoolExecutor)  Executors.newFixedThreadPool((int) numberOfThreads);
+        ThreadPoolExecutor executor = (ThreadPoolExecutor)  Executors.newFixedThreadPool(chunks);
 
-        Map<Integer, List<Integer>> allLists = new TreeMap<>();
-        int y = 0;
-        List<Integer> list = new ArrayList<>();
-        for(int i = 0; i < numberList.size(); i++) {
-            list.add(numberList.get(i));
-            if (i % chunks == 0 || i == numberList.size()-1) {
-                allLists.put(y, list);
-                list.clear();
-                y++;
-            }
+        int listSize = numberList.size() / chunks;
+
+        List<List<Integer>> allLists = new ArrayList<>();
+        for (int i = 0; i < numberList.size(); i += listSize) {
+            allLists.add(new ArrayList<Integer>(numberList.subList(i, Math.min(numberList.size(), i + listSize))));
         }
 
-        for(int i = 0; i < numberOfThreads; i++) {
+        for(int i = 0; i < chunks; i++) {
             Task task = new Task(allLists.get(i), divider);
-            /*System.out.println("created: " + i);*/
             executor.execute(task);
         }
         executor.shutdown();
 
-        int x = 0;
-        for(List<Integer> liste : allLists.values()) {
+        /*int x = 0;
+        for(List<Integer> liste : allLists) {
             System.out.println(x + ": " + liste.size());
             x++;
         }
-        System.out.println(numberList.size());
+        System.out.println(numberList.size());*/
     }
 }
