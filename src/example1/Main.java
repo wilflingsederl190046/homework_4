@@ -16,8 +16,10 @@ public class Main {
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(":");
                 for(int i = 0; i < parts.length; i++) {
-                    if(parts[i].matches("-?\\d+(\\.\\d+)?")) {
+                    try {
                         numberList.add(Integer.parseInt(parts[i].trim()));
+                    } catch (NumberFormatException ex) {
+
                     }
                 }
             }
@@ -44,12 +46,5 @@ public class Main {
             executor.execute(task);
         }
         executor.shutdown();
-
-        /*int x = 0;
-        for(List<Integer> liste : allLists) {
-            System.out.println(x + ": " + liste.size());
-            x++;
-        }
-        System.out.println(numberList.size());*/
     }
 }

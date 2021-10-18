@@ -1,12 +1,12 @@
 package example2;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-public class Task implements Runnable {
+public class Task implements Callable<Integer> {
     private int firstNumber;
     private int lastNumber;
-    private int result;
 
     public Task(int firstNumber, int lastNumber) {
         this.firstNumber = firstNumber;
@@ -14,17 +14,12 @@ public class Task implements Runnable {
     }
 
     @Override
-    public void run() {
+    public Integer call() throws Exception {
+        int result = 0;
         for(int i = firstNumber; i <= lastNumber; i++) {
             result += i;
         }
-    }
-
-    public Future<Integer> calculate(ExecutorService executor) {
-        return executor.submit(() -> {
-            Thread.sleep(10);
-            return this.result;
-        });
+        return result;
     }
 }
 
