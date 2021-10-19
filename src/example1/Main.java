@@ -16,10 +16,8 @@ public class Main {
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(":");
                 for(int i = 0; i < parts.length; i++) {
-                    try {
+                    if(parseToInt(parts[i])) {
                         numberList.add(Integer.parseInt(parts[i].trim()));
-                    } catch (NumberFormatException ex) {
-
                     }
                 }
             }
@@ -46,5 +44,14 @@ public class Main {
             executor.execute(task);
         }
         executor.shutdown();
+    }
+
+    private static boolean parseToInt (String part) {
+        try {
+            Integer.parseInt(part);
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+        return true;
     }
 }
